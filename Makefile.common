@@ -1,5 +1,5 @@
 PRG            ?= main
-MACHINE        ?= uno
+MACHINE        ?= mega2560
 SATS           = $(wildcard SATS/*.sats)
 DATS           = $(wildcard DATS/*.dats)
 DATSC          = $(patsubst %.dats,%_dats.c,$(DATS))
@@ -23,7 +23,7 @@ ifeq ($(MACHINE),mega2560)
 MCU            = atmega2560
 F_CPU          = 16000000UL
 BAUD_RATE      = 115200
-LOADERFLAGS    = -c stk500v2 -p $(MCU) -b $(BAUD_RATE) -P /dev/$(USB)
+LOADERFLAGS    = -c stk500v2 -D -p $(MCU) -b $(BAUD_RATE) -P /dev/$(USB) -v
 else
 # Arduino Uno
 MCU            = atmega328p

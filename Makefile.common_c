@@ -1,5 +1,5 @@
 PRG            ?= main
-MACHINE        ?= uno
+MACHINE        ?= mega2560
 CSRC           = $(wildcard *.c)
 COBJ           = $(patsubst %.c,%.o,$(CSRC))
 C_ARDUINO      = $(wildcard $(TOP)/_arduino/*.c)
