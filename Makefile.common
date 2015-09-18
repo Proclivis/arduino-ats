@@ -1,5 +1,5 @@
 PRG            ?= main
-MACHINE        ?= mega2560
+MACHINE        ?= uno
 SATS           = $(wildcard SATS/*.sats)
 DATS           = $(wildcard DATS/*.dats)
 DATSC          = $(patsubst %.dats,%_dats.c,$(DATS))
