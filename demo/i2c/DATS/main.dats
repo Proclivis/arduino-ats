@@ -4,8 +4,12 @@
 staload "{$TOP}/SATS/arduino.sats"
 staload "{$TOP}/SATS/hardware_serial.sats"
 staload "{$TOP}/SATS/twi.sats"
+staload "{$TOP}/SATS/smbus.sats"
+staload "{$TOP}/SATS/pmbus.sats"
 
 staload "prelude/SATS/unsafe.sats"
+staload "prelude/SATS/list.sats"
+
 
 #define BLINK_DELAY_MS 50.0
 
