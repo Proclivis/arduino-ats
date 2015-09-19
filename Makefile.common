@@ -53,7 +53,6 @@ all: $(PRG).elf lst text eeprom
 
 $(PRG).elf: libarduino.a libatsduino.a $(DATSOBJ)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(DATSOBJ) -L. -latsduino -larduino $(LIBS) 
-#-lgc
 
 # dependency:
 $(DATSOBJ): %_dats.o: %_dats.c
