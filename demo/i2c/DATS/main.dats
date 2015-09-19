@@ -19,6 +19,11 @@ extern fun free {l:addr | l > null} (p: ptr l):void = "mac#free"
 implement main () = {
 
   fun test_bus () = {
+    val e = write_byte (cast{uint8}(0x30), cast{uint8}(0x00), cast{uint8}(0x01))
+    val e = write_word (cast{uint8}(0x30), cast{uint8}(0x79), cast{uint16}(0x55AA))
+    val r = read_byte (cast{uint8}(0x30), cast{uint8}(0x00))
+    val r = read_word (cast{uint8}(0x30), cast{uint8}(0x79))
+    /*
     val o = malloc(sizeof<uint8> * 2)
     val i = malloc(sizeof<uint8> * 2)
 
@@ -44,6 +49,7 @@ implement main () = {
 
     val () = free (o)
     val () = free (i)
+    */
   }
 
   fun readprint () =

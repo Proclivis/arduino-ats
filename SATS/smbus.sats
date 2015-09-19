@@ -1,5 +1,3 @@
-staload "./twi.sats"
-
 datatype smbus_status =
   | SMBusOk of ()
   | SMBusBadLen of ()

@@ -40,6 +40,7 @@ ATSCFLAGS      = -std=c99 -D_XOPEN_SOURCE
 ATSCFLAGS      += -D_ATSTYPE_VAR_SIZE=0X000F -D_ATS_CCOMP_EXCEPTION_NONE -D_ATS_CCOMP_RUNTIME_NONE -D_ATS_CCOMP_PRELUDE_NONE -D_ATS_CCOMP_PRELUDE_USER=\"$(TOP)/avr_prelude/kernel_prelude.cats\"
 ATSCFLAGS      += -Wno-unused-variable -Wno-unused-label
 ATSCFLAGS      += -I. -I${PATSHOME} -I${PATSHOME}/ccomp/runtime -I$(TOP)/_arduino -I$(TOP)/_dummy -I$(TOP)
+ATSCFLAGS      += -DATS_MEMALLOC_LIBC
 
 # Override is only needed by avr-lib build system.
 
