@@ -19,31 +19,23 @@ extern fun free {l:addr | l > null} (p: ptr l):void = "mac#free"
 implement main () = {
 
   fun test_bus () = {
-    val o = malloc(sizeof<uint8> * 2)
-    val i = malloc(sizeof<uint8> * 2)
+    val s = write_byte (cast{uint8}(0x30), cast{uint8}(0x00), cast{uint8}(0x01))
+    val () = show_smbus_status s
 
-    val () = ptr0_set_at<char> (o, 0, '\00')
-    val () = ptr0_set_at<char> (o, 1, '\00')
-    val r1 = twi_writeTo (cast{uint8}(0x30), ptr2cptr (o), cast{uint8}(2), cast{uint8}(1), cast{uint8}(1))
+    val s = write_word (cast{uint8}(0x30), cast{uint8}(0x79), cast{uint16}(0x55AA))
+    val () = show_smbus_status s
 
-    val r1 = twi_writeTo (cast{uint8}(0x30), ptr2cptr (o), cast{uint8}(1), cast{uint8}(1), cast{uint8}(0))
-    val r2 = twi_readFrom (cast{uint8}(0x30), ptr2cptr (i), cast{uint8}(1), cast{uint8}(1))
+    val (s,r) = read_byte (cast{uint8}(0x30), cast{uint8}(0x00))
+    val () = show_smbus_status s
+    val () = println! (cast{int}(r))
 
-    val v = ptr0_get_at<char> (i, 1)
-    val () = println! v
+    val (s,r) = read_word (cast{uint8}(0x30), cast{uint8}(0x79))
+    val () = show_smbus_status s
+    val () = println! (cast{int}(r))
 
-    val () = ptr0_set_at<char> (o, 0, '\00')
-    val () = ptr0_set_at<char> (o, 1, '\01')
-    val r1 = twi_writeTo (cast{uint8}(0x30), ptr2cptr (o), cast{uint8}(2), cast{uint8}(1), cast{uint8}(1))
-
-    val r1 = twi_writeTo (cast{uint8}(0x30), ptr2cptr (o), cast{uint8}(1), cast{uint8}(1), cast{uint8}(0))
-    val r2 = twi_readFrom (cast{uint8}(0x30), ptr2cptr (i), cast{uint8}(1), cast{uint8}(1))
-
-    val v = ptr0_get_at<char> (i, 1)
-    val () = println! v
-
-    val () = free (o)
-    val () = free (i)
+    val (s,r) = read_word (cast{uint8}(0x30), cast{uint8}(0x8B))
+    val () = show_smbus_status s
+    val () = println! (cast{int}(r))
   }
 
   fun readprint () =

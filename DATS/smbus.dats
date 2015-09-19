@@ -53,11 +53,11 @@ implement read_byte (address, command) = let
   val cnt = twi_readFrom (cast{uint8}(address), ptr2cptr (addr@dd), cast{uint8}(1), cast{uint8}(1))
 in
   case+ 0 of
-  | _ when r1 = cast{uint8}(0)  => SMBusData dd
-  | _ when r1 = cast{uint8}(1)  => SMbusError SMBusBadLen
-  | _ when r1 = cast{uint8}(2)  => SMbusError SMBusNack
-  | _ when r1 = cast{uint8}(3)  => SMbusError SMBusOther
-  | _                           => SMbusError SMBusOther
+  | _ when r1 = cast{uint8}(0)  => (SMBusOk, dd)
+  | _ when r1 = cast{uint8}(1)  => (SMBusBadLen, cast{uint8}(0))
+  | _ when r1 = cast{uint8}(2)  => (SMBusNack, cast{uint8}(0))
+  | _ when r1 = cast{uint8}(3)  => (SMBusOther, cast{uint8}(0))
+  | _                           => (SMBusOther, cast{uint8}(0))
 end
 
 implement read_word (address, command) = let
@@ -67,9 +67,17 @@ implement read_word (address, command) = let
   val cnt = twi_readFrom (cast{uint8}(address), ptr2cptr (addr@dd), cast{uint8}(2), cast{uint8}(1))
 in
   case+ 0 of
-  | _ when r1 = cast{uint8}(0)  => SMBusData dd
-  | _ when r1 = cast{uint8}(1)  => SMbusError SMBusBadLen
-  | _ when r1 = cast{uint8}(2)  => SMbusError SMBusNack
-  | _ when r1 = cast{uint8}(3)  => SMbusError SMBusOther
-  | _                           => SMbusError SMBusOther
+  | _ when r1 = cast{uint8}(0)  => (SMBusOk, dd)
+  | _ when r1 = cast{uint8}(1)  => (SMBusBadLen, cast{uint16}(0))
+  | _ when r1 = cast{uint8}(2)  => (SMBusBadLen, cast{uint16}(0))
+  | _ when r1 = cast{uint8}(3)  => (SMBusBadLen, cast{uint16}(0))
+  | _                           => (SMBusBadLen, cast{uint16}(0))
 end
+
+
+implement show_smbus_status (status) =
+  case+ status of
+  | SMBusOk () => _
+  | SMBusBadLen () => println! "SMBusBadLen"
+  | SMBusNack () => println! "SMBusNack"
+  | SMBusOther () => println! "SMBusOther"
