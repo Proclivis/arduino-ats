@@ -85,7 +85,7 @@ ongoing work.
 //! @name TIMEOUT AND DELAY IN US
 //! @{
 #define HW_I2C_DELAY  1
-#define HW_I2C_TIMEOUT  20000
+#define HW_I2C_TIMEOUT  30000
 //! @}
 
 //! @name ACK OR NACK PARAMETER PASSED TO I2C_READ
@@ -211,7 +211,7 @@ uint8_t i2c_read(int8_t ack //!< If ACK is 0 then an acknowledge is generated, e
 int8_t i2c_poll(uint8_t i2c_address //!< i2c_address is the address of the slave being polled.
                );
 
-void twiddle_stop();
+// void twiddle_stop();
 
 // //! Read a byte, store in "value".
 // //! @return -1 if failed or value if it succeeds

@@ -127,13 +127,16 @@ int8_t i2c_read_byte_data(uint8_t address, uint8_t command, uint8_t *value)
   if (i2c_start()!=0)                                //I2C START
     return(1);                                  //Stop and return 0 if START fail
   ret |= i2c_write((address<<1)|I2C_WRITE_BIT);        // Write 7 bit address with W bit
+  if (ret!=0) {i2c_stop(); return(1);}
   ret|= i2c_write(command);                 // Set register to be read to command
+  if (ret!=0) {i2c_stop(); return(1);}
   if (i2c_start()!=0)                                 //I2C repeated START
   {
     i2c_stop();                                 //Attempt to issue I2C STOP
     return(1);                                  //Stop and return 0 if START fail
   }
   ret |= i2c_write((address<<1)|I2C_READ_BIT);     // Write 7 bit address with R bit
+  if (ret!=0) {i2c_stop(); return(1);}
   *value = i2c_read(WITH_NACK);               // Read byte from buffer with NAK
   i2c_stop();                         // I2C STOP
   if (ret!=0)                         //If there was a NAK return 1
@@ -149,7 +152,9 @@ int8_t i2c_write_byte_data(uint8_t address, uint8_t command, uint8_t value)
   if (i2c_start()!=0)                                //I2C START
     return(1);                                  //Stop and return 0 if START fail
   ret |= i2c_write((address<<1)|I2C_WRITE_BIT);        // Write 7 bit address with W bit
+  if (ret!=0) {i2c_stop(); return(1);}
   ret|= i2c_write(command);                 // Set register to be read to command
+  if (ret!=0) {i2c_stop(); return(1);}
   ret|= i2c_write(value);
   i2c_stop();                        // I2C STOP
 
@@ -173,13 +178,16 @@ int8_t i2c_read_word_data(uint8_t address, uint8_t command, uint16_t *value)
   if (i2c_start()!=0)                                //I2C START
     return(1);                                  //Stop and return 0 if START fail
   ret |= i2c_write((address<<1)|I2C_WRITE_BIT);        // Write 7 bit address with W bit
+  if (ret!=0) {i2c_stop(); return(1);}
   ret |= i2c_write(command);                 // Set register to be read to command
+  if (ret!=0) {i2c_stop(); return(1);}
   if (i2c_start()!=0)                                 //I2C START
   {
     i2c_stop();                                 //Attempt to issue I2C STOP
     return(1);                                  //Stop and return 0 if START fail
   }
   ret |= i2c_write((address<<1)|I2C_READ_BIT);     // Write 7 bit address with R bit
+  if (ret!=0) {i2c_stop(); return(1);}
 
   data.b[1] = i2c_read(WITH_ACK);                        // Read MSB from buffer
   data.b[0] = i2c_read(WITH_NACK);                        // Read LSB from buffer
@@ -207,8 +215,11 @@ int8_t i2c_write_word_data(uint8_t address, uint8_t command, uint16_t value)
   if (i2c_start()!=0)                                //I2C START
     return(1);                                  //Stop and return 0 if START fail
   ret |= i2c_write((address<<1)|I2C_WRITE_BIT);       // Write 7 bit address with W bit
+  if (ret!=0) {i2c_stop(); return(1);}
   ret|= i2c_write(command);                 // Set register to be read to command
+  if (ret!=0) {i2c_stop(); return(1);}
   ret|= i2c_write(data.b[1]);         //Write MSB
+  if (ret!=0) {i2c_stop(); return(1);}
   ret|= i2c_write(data.b[0]);         //Write LSB;
 
   i2c_stop();                        // I2C STOP
@@ -229,7 +240,9 @@ int8_t i2c_read_block_data_with_command(uint8_t address, uint8_t command, uint8_
   if (i2c_start()!=0)                                //I2C START
     return(1);                                  //Stop and return 0 if START fail
   ret |= i2c_write((address<<1)|I2C_WRITE_BIT);       //Write 7-bit address with W bit
+  if (ret!=0) {i2c_stop(); return(1);}
   ret|= i2c_write(command);                           //Write 8 bit command word
+  if (ret!=0) {i2c_stop(); return(1);}
   if (i2c_start()!=0)                                 //I2C repeated START
   {
     i2c_stop();                                 //Attempt to issue I2C STOP
@@ -294,7 +307,9 @@ int8_t i2c_write_block_data(uint8_t address, uint8_t command, uint8_t length, ui
   if (i2c_start()!=0)                                //I2C START
     return(1);                                  //Stop and return 0 if START fail
   ret |= i2c_write((address<<1)|I2C_WRITE_BIT);        // Write 7 bit address with W bit
+  if (ret!=0) {i2c_stop(); return(1);}
   ret|= i2c_write(command);           // Set register to be read to command
+  if (ret!=0) {i2c_stop(); return(1);}
 
   while (i>=0)
   {
@@ -328,8 +343,11 @@ int8_t i2c_two_byte_command_read_block(uint8_t address, uint16_t command, uint8_
   if (i2c_start()!=0)                                //I2C START
     return(1);                                  //Stop and return 0 if START fail
   ret |= i2c_write((address<<1)|I2C_WRITE_BIT);           //Write 7-bit address with W bit
+  if (ret!=0) {i2c_stop(); return(1);}
   ret |= i2c_write(comm.b[1]);                             //Write MSB command word
+  if (ret!=0) {i2c_stop(); return(1);}
   ret |= i2c_write(comm.b[0]);                             // Write LSB of command
+  if (ret!=0) {i2c_stop(); return(1);}
   if (i2c_start()!=0)                                 //I2C repeated START
   {
     i2c_stop();                                 //Attempt to issue I2C STOP
@@ -499,8 +517,9 @@ int8_t i2c_poll(uint8_t i2c_address)
   i2c_stop();                                   //! 3) I2C stop
   return(ack);                                  //! 4) Return ack status
 }
-
+/*
 void twiddle_stop()
 {
   TWCR = (1<<TWINT) | (1<<TWEN) | (1<<TWSTO);
 }
+*/
