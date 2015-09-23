@@ -17,6 +17,7 @@ macdef MISO = $extval(pin_type, "SCK")
 macdef WITH_ACK = $extval(int8, "WITH_ACK")
 macdef WITH_NACK = $extval(int8, "WITH_NACK")
 
+fun i2c_set_frequency                  (uint16)                              : void   = "mac#"
 fun i2c_read_byte                      (uint8, cPtr0(uint8))                 : int8   = "mac#"
 fun i2c_write_byte                     (uint8, uint8)                        : int8   = "mac#"
 fun i2c_read_byte_data                 (uint8, uint8, cPtr0(uint8))          : int8   = "mac#"

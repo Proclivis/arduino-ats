@@ -89,7 +89,15 @@ ongoing work.
 #define F_CPU 16000000UL
 #endif
 
-// Read a byte, store in "value".
+// SCL Frequency = CPU Clock Frequency / (PRESCALER + (2 * TWBR))
+
+void i2c_set_frequency(uint16_t freq)
+{
+  unsigned long f = (unsigned long) freq;
+  TWSR = (HARDWARE_I2C_PRESCALER_4 & 0x03);  //! Set the prescaler bits
+  TWBR = ((F_CPU / (f * 1000)) - 16) / 8;     // Should be two. Hack until understood.
+}
+
 int8_t i2c_read_byte(uint8_t address, uint8_t *value)
 {
   uint8_t ret=0;
@@ -517,9 +525,3 @@ int8_t i2c_poll(uint8_t i2c_address)
   i2c_stop();                                   //! 3) I2C stop
   return(ack);                                  //! 4) Return ack status
 }
-/*
-void twiddle_stop()
-{
-  TWCR = (1<<TWINT) | (1<<TWEN) | (1<<TWSTO);
-}
-*/

@@ -99,6 +99,11 @@ ongoing work.
 #define I2C_8ADDR(address) (address >> 1)  //!< Use to convert an 8-bit I2C address to 7 bits.
 //! @}
 
+//! Set clock frequency
+//! @return void
+void i2c_set_frequency(uint16_t freq //!< Frequency in kHz
+  );
+
 //! Read a byte, store in "value".
 //! @return 0 on success, 1 on failure
 int8_t i2c_read_byte(uint8_t address,  //!< 7-bit I2C address
@@ -210,8 +215,6 @@ uint8_t i2c_read(int8_t ack //!< If ACK is 0 then an acknowledge is generated, e
 //! @return Returns 0 if successful, 1 if not successful
 int8_t i2c_poll(uint8_t i2c_address //!< i2c_address is the address of the slave being polled.
                );
-
-// void twiddle_stop();
 
 // //! Read a byte, store in "value".
 // //! @return -1 if failed or value if it succeeds
