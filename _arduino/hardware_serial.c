@@ -57,7 +57,8 @@ struct ring_buffer tx_buffer = { { 0 }, 0, 0};
 
 void ringbuf_insert_nowait(unsigned char c, struct ring_buffer *buffer)
 {
-  int i = (unsigned int)(buffer->head + 1) % SERIAL_BUFFER_SIZE;
+  int i = (unsigned int)(buffer->head + 1);
+  if (i >= SERIAL_BUFFER_SIZE) i -= SERIAL_BUFFER_SIZE;
 
   // if we should be storing the received character into the location
   // just before the tail (meaning that the head would advance to the
@@ -71,7 +72,8 @@ void ringbuf_insert_nowait(unsigned char c, struct ring_buffer *buffer)
 
 void ringbuf_insert_wait(unsigned char c, struct ring_buffer *buffer)
 {
-  int i = (buffer->head + 1) % SERIAL_BUFFER_SIZE;
+  int i = (buffer->head + 1);
+  if (i >= SERIAL_BUFFER_SIZE) i -= SERIAL_BUFFER_SIZE;
 
   // If the output buffer is full, there's nothing for it other than to 
   // wait for the interrupt handler to empty it a bit
@@ -90,7 +92,9 @@ bool ringbuf_is_empty(struct ring_buffer *buffer)
 
 unsigned int ringbuf_get_size(struct ring_buffer *buffer)
 {
-  return (unsigned int)(SERIAL_BUFFER_SIZE + buffer->head - buffer->tail) % SERIAL_BUFFER_SIZE;
+  unsigned int i = (unsigned int)(SERIAL_BUFFER_SIZE + buffer->head - buffer->tail);
+  if (i >= SERIAL_BUFFER_SIZE) i -= SERIAL_BUFFER_SIZE;
+  return i;
 }
 
 unsigned char ringbuf_peek(struct ring_buffer *buffer)
@@ -101,7 +105,8 @@ unsigned char ringbuf_peek(struct ring_buffer *buffer)
 unsigned char ringbuf_remove(struct ring_buffer *buffer)
 {
   unsigned char c = ringbuf_peek(buffer);
-  buffer->tail = (buffer->tail + 1) % SERIAL_BUFFER_SIZE;
+  buffer->tail = (buffer->tail + 1);
+  if (buffer->tail >= SERIAL_BUFFER_SIZE) buffer->tail -= SERIAL_BUFFER_SIZE;
   return c;
 }
 
