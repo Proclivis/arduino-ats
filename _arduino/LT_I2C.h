@@ -86,6 +86,7 @@ ongoing work.
 //! @{
 #define HW_I2C_DELAY  1
 #define HW_I2C_TIMEOUT  30000
+#define HW_I2C_STOP_TIMEOUT 100
 //! @}
 
 //! @name ACK OR NACK PARAMETER PASSED TO I2C_READ

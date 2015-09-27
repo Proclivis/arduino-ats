@@ -454,8 +454,15 @@ int8_t i2c_repeated_start()
 // Write stop bit to the hardware I2C port
 void i2c_stop()
 {
+  uint16_t timeout;
   TWCR=(1<<TWINT) | (1<<TWEN) | (1<<TWSTO);  //! 1) I2C stop
-  while (TWCR & (1<<TWSTO));                 //! 2) Wait for stop to complete
+  // Timeout because mistakes in other layers may
+  for (timeout = 0; timeout < HW_I2C_STOP_TIMEOUT; timeout++)    //! 2) START the timeout loop
+  {
+    _delay_us(1);
+    if (!(TWCR & (1<<TWSTO))) break;                         //!3) Check the TWSTO bit in TWCR
+  }
+  // while (TWCR & (1<<TWSTO));
 }
 
 // Send a data byte to hardware I2C port
