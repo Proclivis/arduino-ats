@@ -52,3 +52,10 @@ fun i2c_read_byte_data                 (uint8, uint8)                        : (
 fun i2c_write_byte_data                (uint8, uint8, uint8)                 : uint8
 fun i2c_read_word_data                 (uint8, uint8)                        : (uint8, uint16)
 fun i2c_write_word_data                (uint8, uint8, uint16)                : uint8
+
+fun i2c_read_byte_pec                  (uint8)                               : (uint8, uint8)
+fun i2c_write_byte_pec                 (uint8, uint8)                        : uint8
+fun i2c_read_byte_data_pec             (uint8, uint8)                        : (uint8, uint8)
+fun i2c_write_byte_data_pec            (uint8, uint8, uint8)                 : uint8
+fun i2c_read_word_data_pec             (uint8, uint8)                        : (uint8, uint16)
+fun i2c_write_word_data_pec            (uint8, uint8, uint16)                : uint8
