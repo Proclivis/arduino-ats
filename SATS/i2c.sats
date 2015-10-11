@@ -1,5 +1,5 @@
 %{#
-#include "LT_I2C.h"
+#include "lti2c.h"
 %}
 
 #define QUIKEVAL_GPIO 9 
@@ -49,8 +49,3 @@ fun i2c_read_byte_data                 (uint8, uint8)                        : (
 fun i2c_write_byte_data                (uint8, uint8, uint8)                 : uint8
 fun i2c_read_word_data                 (uint8, uint8)                        : (uint8, uint16)
 fun i2c_write_word_data                (uint8, uint8, uint16)                : uint8
-
-
-
-fun twiddle_stop                       ()                                    : void   = "mac#"  
-

@@ -10,7 +10,7 @@ C_ATSDUINO     = $(patsubst %.dats,%_dats.c,$(notdir $(DATS_ATSDUINO)))
 OBJ_ATSDUINO   = $(patsubst %.dats,%_dats.o,$(notdir $(DATS_ATSDUINO)))
 C_ARDUINO      = $(wildcard $(TOP)/_arduino/*.c)
 OBJ_ARDUINO    = $(patsubst %.c,%.o,$(notdir $(C_ARDUINO)))
-OPTIMIZE       = -Os
+OPTIMIZE       = -O2
 LOADER         = avrdude
 
 DEFS           ?=

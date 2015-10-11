@@ -82,7 +82,7 @@ ongoing work.
 #include <stdint.h>
 #include <util/delay.h>
 #include "Linduino.h"
-#include "LT_I2C.h"
+#include "lti2c.h"
 
 //! CPU master clock frequency
 #ifndef F_CPU

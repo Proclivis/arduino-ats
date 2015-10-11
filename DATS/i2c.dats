@@ -81,7 +81,7 @@ implement i2c_read_word_data(address: uint8, command: uint8): (uint8, uint16) = 
   val w  = (u16(b1) << 8) + u16(b0)
   in (err, w) end
 
-  implement i2c_write_word_data(address: uint8, command: uint8, data: uint16): uint8 = let
+implement i2c_write_word_data(address: uint8, command: uint8, data: uint16): uint8 = let
   var err: uint8 =                                          err (0, u8)
   val () = ifnerr(i2c_start(),                              err, 1, u8)
   val () = ifnerr(i2c_write(wa address),                    err, 2, u8)
