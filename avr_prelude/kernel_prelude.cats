@@ -10,3 +10,6 @@
 #include "prelude/CATS/array.cats"
 #include "prelude/CATS/arrayptr.cats"
 #include "prelude/CATS/arrayref.cats"
+//#include "prelude/CATS/integer_ptr.cats"
+//#include "prelude/CATS/filebas.cats"
+//#include "prelude/CATS/fprintf.cats"
