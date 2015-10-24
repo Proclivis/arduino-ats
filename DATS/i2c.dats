@@ -48,7 +48,7 @@ implement i2c_read_byte_pec(address: uint8): (uint8, uint8) = let
   val b    =        i2c_read(u8(WITH_ACK))
   val pec  =        i2c_read(u8(WITH_NACK))
   val ()   =        i2c_stop()
-  val err2 = if err = u8(1) then err else if pec = pec_add(pec_add(u8(0), address), b) then u8(0) else u8(1)
+  val err2 = if err = u8(1) then err else if pec = pec_add(pec_add(u8(0), wa address), b) then u8(0) else u8(1)
   in (err2, b) end
 
 implement i2c_write_byte(address: uint8, data: uint8): uint8 = let
@@ -61,7 +61,7 @@ implement i2c_write_byte(address: uint8, data: uint8): uint8 = let
 
 implement i2c_write_byte_pec(address: uint8, data: uint8): uint8 = let
   var err: uint8 =                                 err (0, u8)
-  val pec = pec_add(pec_add(u8(0), address), data)
+  val pec = pec_add(pec_add(u8(0), wa address), data)
   val ()  = ifnerr(i2c_start(),                    err, 1, u8)
   val ()  = ifnerr(i2c_write(wa address),          err, 2, u8)
   val ()  = ifnerr(i2c_write(data),                err, 3, u8)
@@ -87,10 +87,10 @@ implement i2c_read_byte_data_pec(address: uint8, command: uint8): (uint8, uint8)
   val ()   = ifnerr(i2c_write(command),    err, 3, u8)
   val ()   = ifnerr(i2c_start(),           err, 4, u8)  
   val ()   = ifnerr(i2c_write(ra address), err, 5, u8)
-  val b    = if err = u8(0) then i2c_read(u8(WITH_ACK)) else u8(0)
-  val pec  = if err = u8(0) then i2c_read(u8(WITH_NACK)) else u8(0)
+  val b    =        i2c_read(u8(WITH_ACK))
+  val pec  =        i2c_read(u8(WITH_NACK))
   val ()   = i2c_stop()
-  val err2 = if err = u8(1) then err else if pec = pec_add(pec_add(pec_add(u8(0), address), command), b) then u8(0) else u8(1)
+  val err2 = if err = u8(1) then err else if pec = pec_add(pec_add(pec_add(pec_add(u8(0), wa address), command), ra address), b) then u8(0) else u8(1)
   in (err2, b) end
 
 implement i2c_write_byte_data(address: uint8, command: uint8, data: uint8): uint8 = let
@@ -104,7 +104,7 @@ implement i2c_write_byte_data(address: uint8, command: uint8, data: uint8): uint
 
 implement i2c_write_byte_data_pec(address: uint8, command: uint8, data: uint8): uint8 = let
   var err: uint8 =                                                    err (0, u8)
-  val pec = pec_add(pec_add(pec_add(u8(0), address), command), data)
+  val pec = pec_add(pec_add(pec_add(u8(0), wa address), command), data)
   val ()  = ifnerr(i2c_start(),                                       err, 1, u8)
   val ()  = ifnerr(i2c_write(wa address),                             err, 2, u8)
   val ()  = ifnerr(i2c_write(command),                                err, 3, u8)
@@ -133,12 +133,12 @@ implement i2c_read_word_data_pec(address: uint8, command: uint8): (uint8, uint16
   val ()   = ifnerr(i2c_write(command),    err, 3, u8)
   val ()   = ifnerr(i2c_start(),           err, 4, u8)
   val ()   = ifnerr(i2c_write(ra address), err, 5, u8)
-  val b1   = if err = u8(0) then i2c_read(u8(WITH_ACK)) else u8(0)
-  val b0   = if err = u8(0) then i2c_read(u8(WITH_ACK)) else u8(0)
-  val pec  = if err = u8(0) then i2c_read(u8(WITH_NACK)) else u8(0)
+  val b1   =        i2c_read(u8(WITH_ACK))
+  val b0   =        i2c_read(u8(WITH_ACK))
+  val pec  =        i2c_read(u8(WITH_NACK))
   val ()   = i2c_stop()
   val w    = (u16(b0) << 8) + u16(b1)
-  val err2 = if err = u8(1) then err else if pec = pec_add(pec_add(pec_add(pec_add(u8(0), address), command), b1), b0) then u8(0) else u8(1)
+  val err2 = if err = u8(1) then err else if pec = pec_add(pec_add(pec_add(pec_add(pec_add(u8(0), wa address), command), ra address), b1), b0) then u8(0) else u8(1)
   in (err2, w) end
 
 implement i2c_write_word_data(address: uint8, command: uint8, data: uint16): uint8 = let
@@ -155,7 +155,7 @@ implement i2c_write_word_data_pec(address: uint8, command: uint8, data: uint16):
   var err: uint8 =                                                                            err (0, u8)
   val data0 = u8(data >> 8)
   val data1 = u8(data - ((data >> 8) << 8))
-  val pec = pec_add(pec_add(pec_add(pec_add(u8(0), address), command), data0), data1)
+  val pec = pec_add(pec_add(pec_add(pec_add(u8(0), wa address), command), data0), data1)
   val ()  = ifnerr(i2c_start(),                                                               err, 1, u8)
   val ()  = ifnerr(i2c_write(wa address),                                                     err, 2, u8)
   val ()  = ifnerr(i2c_write(command),                                                        err, 3, u8)
