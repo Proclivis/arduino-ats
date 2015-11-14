@@ -14,8 +14,8 @@ macdef SS = $extval(pin_type, "SS")
 macdef MOSI = $extval(pin_type, "MOSI")
 macdef MISO = $extval(pin_type, "MISO")
 macdef MISO = $extval(pin_type, "SCK")
-macdef WITH_ACK = $extval(int8, "WITH_ACK")
-macdef WITH_NACK = $extval(int8, "WITH_NACK")
+macdef WITH_ACK = $extval(uint8, "WITH_ACK")
+macdef WITH_NACK = $extval(uint8, "WITH_NACK")
 
 (* External Primative Commands *)
 fun i2c_set_frequency                  (uint16)                              : void   = "mac#i2c_set_frequency"
